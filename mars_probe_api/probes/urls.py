@@ -1,7 +1,11 @@
 from fastapi import APIRouter
 
 from mars_probe_api.probes import views
-from mars_probe_api.probes.responses import CreateProbeResponse, ListProbesResponse
+from mars_probe_api.probes.responses import (
+    CreateProbeResponse,
+    ListProbesResponse,
+    MoveProbeResponse,
+)
 
 router = APIRouter()
 
@@ -20,3 +24,11 @@ router.get(
     name="list_probes",
     response_model=ListProbesResponse,
 )(views.ListProbesView.get)
+
+router.patch(
+    "/{probe_id}",
+    summary="Move uma sonda",
+    tags=["Probes"],
+    name="move_probe",
+    response_model=MoveProbeResponse,
+)(views.MoveProbeView.patch)
