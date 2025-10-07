@@ -29,3 +29,14 @@ class ListProbesResponse(BaseModel):
     """
 
     probes: list[ProbeItem]
+
+
+class MoveProbeResponse(BaseModel):
+    """
+    Resposta padrão ao mover sonda
+    """
+
+    id: str
+    x: int
+    y: int
+    direction: str
