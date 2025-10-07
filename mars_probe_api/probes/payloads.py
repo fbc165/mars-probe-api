@@ -16,6 +16,16 @@ class DirectionEnum(str, Enum):
     WEST = "WEST"
 
 
+class CommandEnum(str, Enum):
+    """
+    Comandos válidos para movimentar a sonda
+    """
+
+    TURN_LEFT = "L"
+    TURN_RIGHT = "R"
+    MOVE_FORWARD = "M"
+
+
 # Tipos personalizados
 
 Coordinate = Annotated[
