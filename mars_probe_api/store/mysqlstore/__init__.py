@@ -1,3 +1,5 @@
+from typing import Generator
+
 from mars_probe_api.settings import SQLALCHEMY_DATABASE_URI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session as SQLAlchemySession
@@ -17,3 +19,18 @@ engine = create_engine(
     },
 )
 Session = sessionmaker(bind=engine)
+
+
+def get_db() -> Generator[SQLAlchemySession, None, None]:
+    """
+    Dependency para injeção de dependência do FastAPI
+    """
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
