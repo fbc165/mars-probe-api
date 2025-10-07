@@ -10,21 +10,22 @@ class ProbeService:
         terrain_length: int,
         terrain_width: int,
         direction: DirectionEnum,
-        session: SQLAlchemySession,
+        db_session: SQLAlchemySession,
     ) -> Probe:
         probe = Probe(
             direction=direction.value,
             terrain_length=terrain_length,
             terrain_width=terrain_width,
         )
-        session.add(probe)
-        session.flush()
+        db_session.add(probe)
+        db_session.flush()
 
         return probe
 
     @classmethod
     def get_all_probes(
         cls,
-        session: SQLAlchemySession,
+        db_session: SQLAlchemySession,
     ) -> list[Probe]:
-        return session.query(Probe).order_by(Probe.id).all()
+        return db_session.query(Probe).order_by(Probe.id).all()
+

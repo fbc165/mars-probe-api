@@ -25,12 +25,12 @@ def get_db() -> Generator[SQLAlchemySession, None, None]:
     """
     Dependency para injeção de dependência do FastAPI
     """
-    session = Session()
+    db_session = Session()
     try:
-        yield session
-        session.commit()
+        yield db_session
+        db_session.commit()
     except Exception:
-        session.rollback()
+        db_session.rollback()
         raise
     finally:
-        session.close()
+        db_session.close()

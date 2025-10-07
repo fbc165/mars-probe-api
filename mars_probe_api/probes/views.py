@@ -14,7 +14,7 @@ class CreateProbeView:
     @staticmethod
     def post(
         probe_setup: CreateProbePayload,
-        session: SQLAlchemySession = Depends(get_db),
+        db_session: SQLAlchemySession = Depends(get_db),
     ) -> CreateProbeResponse:
         """
         View responsável pelo lançamento de uma sonda
@@ -27,7 +27,7 @@ class CreateProbeView:
                 terrain_length=probe_setup.x,
                 terrain_width=probe_setup.y,
                 direction=probe_setup.direction,
-                session=session,
+                db_session=db_session,
             )
 
             return CreateProbeResponse(
@@ -46,13 +46,13 @@ class CreateProbeView:
 class ListProbesView:
     @staticmethod
     def get(
-        session: SQLAlchemySession = Depends(get_db),
+        db_session: SQLAlchemySession = Depends(get_db),
     ) -> ListProbesResponse:
         """
         View responsável por listar todas as sondas lançadas
         """
 
-        probes = ProbeService.get_all_probes(session=session)
+        probes = ProbeService.get_all_probes(db_session=db_session)
 
         return ListProbesResponse(
             probes=[
