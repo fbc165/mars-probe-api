@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
 
 class DirectionEnum(str, Enum):
@@ -41,3 +41,19 @@ class CreateProbePayload(BaseModel):
     x: Coordinate
     y: Coordinate
     direction: DirectionEnum
+
+
+class MoveProbePayload(BaseModel):
+    commands: str
+
+    @field_validator("commands")
+    @classmethod
+    def validate_command(cls, value: str, info: ValidationInfo) -> str:
+        valid_commands = {command.value for command in CommandEnum}
+        if not value:
+            raise ValueError(f"empty command is not a valid movement")
+        for command in value:
+            if command not in valid_commands:
+                raise ValueError(f"command '{command}' is not valid")
+
+        return value
