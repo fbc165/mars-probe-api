@@ -56,15 +56,22 @@ class ListProbesView:
         """
         View responsável por listar todas as sondas lançadas
         """
+        try:
+            probes = ProbeService.get_all_probes(db_session=db_session)
 
-        probes = ProbeService.get_all_probes(db_session=db_session)
-
-        return ListProbesResponse(
-            probes=[
-                ProbeItem(id=probe.id, x=probe.x, y=probe.y, direction=probe.direction)
-                for probe in probes
-            ]
-        )
+            return ListProbesResponse(
+                probes=[
+                    ProbeItem(
+                        id=probe.id, x=probe.x, y=probe.y, direction=probe.direction
+                    )
+                    for probe in probes
+                ]
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=str(e),
+            )
 
 
 class MoveProbeView:
