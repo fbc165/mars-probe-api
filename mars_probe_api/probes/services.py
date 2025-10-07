@@ -1,8 +1,6 @@
-from fastapi import Depends
-
 from mars_probe_api.probes.models import Probe
 from mars_probe_api.probes.payloads import DirectionEnum
-from mars_probe_api.store.mysqlstore import SQLAlchemySession, get_db
+from mars_probe_api.store.mysqlstore import SQLAlchemySession
 
 
 class ProbeService:
@@ -12,7 +10,7 @@ class ProbeService:
         terrain_length: int,
         terrain_width: int,
         direction: DirectionEnum,
-        session: SQLAlchemySession = Depends(get_db),
+        session: SQLAlchemySession,
     ) -> Probe:
         probe = Probe(
             direction=direction.value,
@@ -27,6 +25,6 @@ class ProbeService:
     @classmethod
     def get_all_probes(
         cls,
-        session: SQLAlchemySession = Depends(get_db),
+        session: SQLAlchemySession,
     ) -> list[Probe]:
         return session.query(Probe).order_by(Probe.id).all()
