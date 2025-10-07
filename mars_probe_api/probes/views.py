@@ -1,7 +1,11 @@
 from fastapi import Depends, HTTPException, status
 
 from mars_probe_api.probes.payloads import CreateProbePayload
-from mars_probe_api.probes.responses import CreateProbeResponse
+from mars_probe_api.probes.responses import (
+    CreateProbeResponse,
+    ListProbesResponse,
+    ProbeItem,
+)
 from mars_probe_api.probes.services import ProbeService
 from mars_probe_api.store.mysqlstore import SQLAlchemySession, get_db
 
@@ -37,3 +41,22 @@ class CreateProbeView:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal server error",
             )
+
+
+class ListProbesView:
+    @staticmethod
+    def get(
+        session: SQLAlchemySession = Depends(get_db),
+    ) -> ListProbesResponse:
+        """
+        View responsável por listar todas as sondas lançadas
+        """
+
+        probes = ProbeService.get_all_probes(session=session)
+
+        return ListProbesResponse(
+            probes=[
+                ProbeItem(id=probe.id, x=probe.x, y=probe.y, direction=probe.direction)
+                for probe in probes
+            ]
+        )

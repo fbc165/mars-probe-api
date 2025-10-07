@@ -23,3 +23,10 @@ class ProbeService:
         session.flush()
 
         return probe
+
+    @classmethod
+    def get_all_probes(
+        cls,
+        session: SQLAlchemySession = Depends(get_db),
+    ) -> list[Probe]:
+        return session.query(Probe).order_by(Probe.id).all()
