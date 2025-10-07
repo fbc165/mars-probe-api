@@ -34,7 +34,9 @@ class CreateProbeView:
                 id=probe.id, x=probe.x, y=probe.y, direction=probe.direction
             )
         except ValueError as e:
-            raise HTTPException(status_code=status.HTTP_422_BAD_REQUEST, detail=str(e))
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(e)
+            )
 
         except Exception:
             raise HTTPException(
