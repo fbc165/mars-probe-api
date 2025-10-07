@@ -7,11 +7,12 @@ from pydantic import BaseModel, Field
 class DirectionEnum(str, Enum):
     """
     Direções possíveis de uma sonda
+    Ordenadas no sentido horário
     """
 
     NORTH = "NORTH"
-    SOUTH = "SOUTH"
     EAST = "EAST"
+    SOUTH = "SOUTH"
     WEST = "WEST"
 
 
