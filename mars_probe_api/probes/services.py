@@ -29,3 +29,10 @@ class ProbeService:
     ) -> list[Probe]:
         return db_session.query(Probe).order_by(Probe.id).all()
 
+    @classmethod
+    def get_probe_by_id(
+        cls,
+        id: str,
+        db_session: SQLAlchemySession,
+    ) -> Probe:
+        return db_session.query(Probe).filter(Probe.id == id).one_or_none()
