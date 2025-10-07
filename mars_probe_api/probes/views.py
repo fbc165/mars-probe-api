@@ -1,9 +1,12 @@
+from uuid import UUID
+
 from fastapi import Depends, HTTPException, status
 
-from mars_probe_api.probes.payloads import CreateProbePayload
+from mars_probe_api.probes.payloads import CreateProbePayload, MoveProbePayload
 from mars_probe_api.probes.responses import (
     CreateProbeResponse,
     ListProbesResponse,
+    MoveProbeResponse,
     ProbeItem,
 )
 from mars_probe_api.probes.services import ProbeService
@@ -62,3 +65,39 @@ class ListProbesView:
                 for probe in probes
             ]
         )
+
+
+class MoveProbeView:
+    @staticmethod
+    def patch(
+        probe_id: UUID,
+        move_probe_payload: MoveProbePayload,
+        db_session: SQLAlchemySession = Depends(get_db),
+    ) -> MoveProbeResponse:
+        """
+        View responsável por mover uma sonda
+        """
+        try:
+            probe = ProbeService.get_probe_by_id(id=probe_id, db_session=db_session)
+            if not probe:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="Probe not found"
+                )
+            probe = ProbeService.move_probe(
+                probe=probe, commands=move_probe_payload.commands, db_session=db_session
+            )
+            return MoveProbeResponse(
+                id=probe.id,
+                x=probe.x,
+                y=probe.y,
+                direction=probe.direction,
+            )
+        except ValueError as e:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(e)
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=str(e),
+            )
