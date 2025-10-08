@@ -1,9 +1,10 @@
 import uuid
+from typing import Any
 
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base  # type: ignore
 
-Base = declarative_base()
+Base: Any = declarative_base()
 
 
 class Probe(Base):
