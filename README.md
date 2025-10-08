@@ -47,8 +47,9 @@ mars_probe_api/
 
 ### 1. Subir o MySQL
 ```
-docker-compose up -d mysql
+docker-compose up mysql
 ```
+- verifique se a porta 3306 já não está sendo utilizada por outro contêiner ou aplicação. Em caso afirmativo, libera a porta
 
 ### 2. Criar banco de dados (primeira vez)
 ```
