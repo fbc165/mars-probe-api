@@ -85,7 +85,9 @@ class MoveProbeView:
         View responsável por mover uma sonda
         """
         try:
-            probe = ProbeService.get_probe_by_id(id=probe_id, db_session=db_session)
+            probe = ProbeService.get_probe_by_id(
+                id=str(probe_id), db_session=db_session
+            )
             if not probe:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND, detail="Probe not found"

@@ -34,7 +34,7 @@ class ProbeService:
     @classmethod
     def get_probe_by_id(
         cls,
-        id: UUID,
+        id: str,
         db_session: SQLAlchemySession,
     ) -> Probe | None:
         return db_session.query(Probe).filter(Probe.id == id).one_or_none()
