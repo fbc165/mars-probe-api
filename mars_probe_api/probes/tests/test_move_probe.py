@@ -1,4 +1,5 @@
 import uuid
+
 import pytest
 
 from mars_probe_api.probes.payloads import DirectionEnum
@@ -116,7 +117,8 @@ def test_probe_with_valid_movement_after_displacement(
     mock_get_probe_by_id, client, probe_with_initial_position
 ):
     """
-    A sonda vai para uma posição válida (1, 2, EAST)
+    A sonda vai para uma posição válida (1, 2, EAST) depois de realizar
+    outros deslocamentos válidos
     """
     response = client.patch(
         f"/probes/{probe_with_initial_position.id}", json={"commands": "MMRM"}
@@ -134,6 +136,10 @@ def test_probe_with_valid_movement_after_displacement(
 def test_probe_with_invalid_movement_after_displacement(
     mock_get_probe_by_id, client, probe_with_initial_position
 ):
+    """
+    A sonda vai para uma posição inválida depois de realizar
+    um deslocamento válido
+    """
     response = client.patch(
         f"/probes/{probe_with_initial_position.id}", json={"commands": "MMLM"}
     )
@@ -144,6 +150,9 @@ def test_probe_with_invalid_movement_after_displacement(
 def test_probe_with_invalid_command(
     mock_get_probe_by_id, client, probe_with_initial_position
 ):
+    """
+    Teste requisição feita com um comando inválido
+    """
     response = client.patch(
         f"/probes/{probe_with_initial_position.id}", json={"commands": "K"}
     )
@@ -154,6 +163,9 @@ def test_probe_with_invalid_command(
 def test_probe_with_empty_command(
     mock_get_probe_by_id, client, probe_with_initial_position
 ):
+    """
+    Teste com requisição feita com um comando vazio, também inválido
+    """
     response = client.patch(
         f"/probes/{probe_with_initial_position.id}", json={"commands": ""}
     )
@@ -162,6 +174,9 @@ def test_probe_with_empty_command(
 
 
 def test_probe_bad_payload(mock_get_probe_by_id, client, probe_with_initial_position):
+    """
+    Teste com equisição feita com um payload errado
+    """
     response = client.patch(
         f"/probes/{probe_with_initial_position.id}", json={"wrong_word": ""}
     )
@@ -170,6 +185,9 @@ def test_probe_bad_payload(mock_get_probe_by_id, client, probe_with_initial_posi
 
 
 def test_probe_not_found(mock_get_probe_by_id_none, client):
+    """
+    Teste com nenhuma sonda encontrada
+    """
     response = client.patch(f"/probes/{str(uuid.uuid4())}", json={"commands": "LR"})
 
     assert response.status_code == 404

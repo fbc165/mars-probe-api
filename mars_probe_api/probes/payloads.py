@@ -44,6 +44,10 @@ class CreateProbePayload(BaseModel):
 
 
 class MoveProbePayload(BaseModel):
+    """
+    Payload para mover uma sonda
+    """
+
     commands: str
 
     @field_validator("commands")

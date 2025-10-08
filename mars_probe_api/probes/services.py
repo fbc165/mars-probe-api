@@ -14,6 +14,18 @@ class ProbeService:
         direction: DirectionEnum,
         db_session: SQLAlchemySession,
     ) -> Probe:
+        """
+        Cria novo registro de sonda no banco de dados.
+
+        Args:
+            terrain_length (int): Comprimento máximo (eixo Y) do terreno onde a sonda irá operar.
+            terrain_width (int): Largura máxima (eixo X) do terreno onde a sonda irá operar.
+            direction (DirectionEnum): Direção inicial da sonda.
+            db_session (SQLAlchemySession): Sessão ativa do SQLAlchemy usada para persistência.
+        Returns:
+            Probe: A instância da sonda recém-criada e já registrada na sessão.
+        """
+
         probe = Probe(
             direction=direction.value,
             terrain_length=terrain_length,
@@ -29,6 +41,15 @@ class ProbeService:
         cls,
         db_session: SQLAlchemySession,
     ) -> list[Probe]:
+        """
+        Retorna todas as instâncias de Probe em ordem crescente de ID.
+
+        Args:
+            db_session (SQLAlchemySession): Sessão SQLAlchemy ativa usada para executar a consulta.
+        Returns:
+            list[Probe]: Lista de objetos Probe ordenados por Probe.id (ascendente).
+        """
+
         return db_session.query(Probe).order_by(Probe.id).all()
 
     @classmethod
@@ -37,6 +58,16 @@ class ProbeService:
         id: str,
         db_session: SQLAlchemySession,
     ) -> Probe | None:
+        """
+        Recupera uma instância de Probe a partir do seu identificador único.
+
+        Args:
+            id (str): Identificador único da sonda que se deseja buscar.
+            db_session (SQLAlchemySession): Sessão ativa do SQLAlchemy usada para executar a consulta.
+        Returns:
+            Probe | None: A instância da sonda correspondente ao ID informado ou None se não existir.
+        """
+
         return db_session.query(Probe).filter(Probe.id == id).one_or_none()
 
     @classmethod
