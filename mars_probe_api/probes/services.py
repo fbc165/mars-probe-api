@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from mars_probe_api.probes.models import Probe
 from mars_probe_api.probes.payloads import CommandEnum, DirectionEnum
 from mars_probe_api.store.mysqlstore import SQLAlchemySession
@@ -32,9 +34,9 @@ class ProbeService:
     @classmethod
     def get_probe_by_id(
         cls,
-        id: str,
+        id: UUID,
         db_session: SQLAlchemySession,
-    ) -> Probe:
+    ) -> Probe | None:
         return db_session.query(Probe).filter(Probe.id == id).one_or_none()
 
     @classmethod
