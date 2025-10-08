@@ -1,6 +1,7 @@
 # Mars Probe API
 
 API para lançamento, listagem e movimentação de sondas em um planalto marciano. Esse projeto faz parte do desafio técnico da RD Station
+Foi utilizado FastAPI para a criação da API.
 
 ---
 ## Versões
