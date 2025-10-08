@@ -97,6 +97,15 @@ def mock_get_probe_by_id(probe_with_initial_position):
 
 
 @pytest.fixture
+def mock_get_probe_by_id_none(probe_with_initial_position):
+    with mock.patch(
+        "mars_probe_api.probes.services.ProbeService.get_probe_by_id"
+    ) as mock_get_probe_by_id:
+        mock_get_probe_by_id.return_value = None
+        yield mock_get_probe_by_id
+
+
+@pytest.fixture
 def mock_create_probe(probe_payload):
     with mock.patch(
         "mars_probe_api.probes.services.ProbeService.create_probe"

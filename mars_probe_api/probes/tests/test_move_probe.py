@@ -1,3 +1,4 @@
+import uuid
 import pytest
 
 from mars_probe_api.probes.payloads import DirectionEnum
@@ -166,3 +167,9 @@ def test_probe_bad_payload(mock_get_probe_by_id, client, probe_with_initial_posi
     )
 
     assert response.status_code == 422
+
+
+def test_probe_not_found(mock_get_probe_by_id_none, client):
+    response = client.patch(f"/probes/{str(uuid.uuid4())}", json={"commands": "LR"})
+
+    assert response.status_code == 404
