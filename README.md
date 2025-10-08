@@ -7,7 +7,7 @@ API para lançamento, listagem e movimentação de sondas em um planalto marcian
 | Componente | Versão |
 |------------|--------|
 | API        | 0.0.1  |
-| Python     | 3.13.8   |
+| Python     | 3.13.8 |
 
 ---
 ## Execução
@@ -126,3 +126,4 @@ Resposta típica:
 | mypy | Tipagem estática |
 | black | Formatação |
 
+- Obs.: credenciais e variáveis de ambientes estão hardcoded para facilitar ao rodar localmente
