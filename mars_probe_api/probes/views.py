@@ -88,10 +88,17 @@ class MoveProbeView:
             probe = ProbeService.get_probe_by_id(
                 id=str(probe_id), db_session=db_session
             )
-            if not probe:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND, detail="Probe not found"
-                )
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Internal server error",
+            )
+        if not probe:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Probe not found"
+            )
+
+        try:
             probe = ProbeService.move_probe(
                 probe=probe, commands=move_probe_payload.commands, db_session=db_session
             )
